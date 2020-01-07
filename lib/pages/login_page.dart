@@ -9,66 +9,86 @@ import 'package:carros/widgets/app_text.dart';
 import 'package:carros/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   var _tLogin = TextEditingController();
   var _tSenha = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbar("Carros"),
-      body: _body(context),
+      body: _body(),
     );
   }
 
-  _body(context) {
-    return Form(
-      key: _formKey,
-      child: Container(
-        color: Colors.white,
-        margin: EdgeInsets.all(16),
-        child: ListView(
-          children: <Widget>[
-            AppText(
-              "Login",
-              "Digite o login",
-              controller: _tLogin,
-              validator: _validateLogin,
-              keyboardType: TextInputType.emailAddress,
+  _body() {
+    return loading
+        ? Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
             ),
-            SizedBox(
-              height: 10,
+          )
+        : Form(
+            key: _formKey,
+            child: Container(
+              color: Colors.white,
+              margin: EdgeInsets.all(16),
+              child: ListView(
+                children: <Widget>[
+                  AppText(
+                    "Login",
+                    "Digite o login",
+                    controller: _tLogin,
+                    validator: _validateLogin,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  AppText("Senha", "Digite a senha",
+                      password: true,
+                      controller: _tSenha,
+                      validator: _validatePassword,
+                      keyboardType: TextInputType.number),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  AppButton(
+                    "Login",
+                    onPressed: () {
+                      _onClickLogin(context);
+                    },
+                  )
+                ],
+              ),
             ),
-            AppText("Senha", "Digite a senha",
-                password: true,
-                controller: _tSenha,
-                validator: _validatePassword,
-                keyboardType: TextInputType.number),
-            SizedBox(
-              height: 16,
-            ),
-            AppButton(
-              "Login",
-              onPressed: () {
-                _onClickLogin(context);
-              },
-            )
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   _onClickLogin(context) async {
     if (_formKey.currentState.validate()) {
+      setState(() {
+        loading = true;
+      });
+
       Result ok = await LoginApi.login(_tLogin.text, _tSenha.text);
 
       if (ok.status == Status.SUCCESS) {
-        push(context, HomPage());
-      }else{
+        push(context, HomPage(), replace: true);
+      } else {
         confirmAlert(context, ok.message);
       }
+
+      setState(() {
+        loading = false;
+      });
     }
   }
 

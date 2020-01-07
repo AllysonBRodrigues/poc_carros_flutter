@@ -1,4 +1,5 @@
 import 'package:carros/widgets/appbar.dart';
+import 'package:carros/widgets/drawer_menu.dart';
 import 'package:flutter/material.dart';
 
 class HomPage extends StatelessWidget{
@@ -9,6 +10,7 @@ class HomPage extends StatelessWidget{
     return Scaffold(
       appBar: appbar("Carros"),
       body: _body(),
+      drawer: DrawerList(),
     );
   }
 }
