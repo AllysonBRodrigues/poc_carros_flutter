@@ -1,5 +1,8 @@
+import 'package:carros/enuns/status.dart';
+import 'package:carros/model/result.dart';
 import 'package:carros/network/login_api.dart';
 import 'package:carros/pages/home_page.dart';
+import 'package:carros/utils/dialog.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/app_buttn.dart';
 import 'package:carros/widgets/app_text.dart';
@@ -59,12 +62,12 @@ class LoginPage extends StatelessWidget {
 
   _onClickLogin(context) async {
     if (_formKey.currentState.validate()) {
-      bool ok = await LoginApi.login(_tLogin.text, _tSenha.text);
+      Result ok = await LoginApi.login(_tLogin.text, _tSenha.text);
 
-      if (ok) {
+      if (ok.status == Status.SUCCESS) {
         push(context, HomPage());
       }else{
-        print("Login incorreto");
+        confirmAlert(context, ok.message);
       }
     }
   }
