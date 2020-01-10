@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:carros/model/User.dart';
+import 'package:carros/model/user.dart';
 import 'package:carros/model/result.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,6 +15,8 @@ class LoginApi {
 
       var response =
           await http.post(url, body: json.encode(params), headers: headers);
+
+      print(response.body);
 
       Map mapResponse = json.decode(response.body);
 
