@@ -2,47 +2,53 @@ import 'package:carros/enuns/status.dart';
 import 'package:carros/model/cars.dart';
 import 'package:carros/model/result.dart';
 import 'package:carros/network/cars_api.dart';
+import 'package:carros/pages/car_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../model/result.dart';
+import '../network/cars_api.dart';
+import '../utils/nav.dart';
+
 class CarsListView extends StatefulWidget {
   String carTypes;
-
   CarsListView(this.carTypes);
 
   @override
   _CarsListViewState createState() => _CarsListViewState();
-}
 
+}
 class _CarsListViewState extends State<CarsListView> with AutomaticKeepAliveClientMixin<CarsListView>{
+  Result<List<Cars>> cars;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future<Result<List<Cars>>> future = CarsApi.getCars(widget.carTypes);
+
+    future.then((Result<List<Cars>> result) {
+      setState(() {
+        cars = result;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return _body();
+     if(cars == null) {
+       return Center(
+         child: CircularProgressIndicator(
+           valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+         ),
+       );
+    }else{
+       return _body();
+    }
   }
 
   _body() {
-    return FutureBuilder(
-      future: CarsApi.getCars(widget.carTypes),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          print(snapshot.error);
-          return Center(
-            child: Text(
-              "Error ao recuperar lista",
-              style: TextStyle(fontSize: 20),
-            ),
-          );
-        }
-
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        Result<List<Cars>> cars = snapshot.data;
-
         if (cars.status == Status.SUCCESS) {
           return _listCars(cars.data);
         } else {
@@ -53,8 +59,6 @@ class _CarsListViewState extends State<CarsListView> with AutomaticKeepAliveClie
             ),
           );
         }
-      },
-    );
   }
 
   Container _listCars(List<Cars> cars) {
@@ -96,7 +100,7 @@ class _CarsListViewState extends State<CarsListView> with AutomaticKeepAliveClie
                           'DETALHES',
                         ),
                         onPressed: () {
-                          /* ... */
+                         push(context, CarDetail(car));
                         },
                       ),
                       FlatButton(

@@ -9,6 +9,10 @@ import 'package:carros/widgets/app_text.dart';
 import 'package:carros/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
+import '../model/user.dart';
+import '../utils/nav.dart';
+import 'home_page.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -21,6 +25,18 @@ class _LoginPageState extends State<LoginPage> {
   bool loading = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future<User> future = User.get();
+    future.then((User user) {
+      if (user != null) {
+        push(context, HomPage());
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbarLogin("Carros"),
@@ -29,47 +45,42 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _body() {
-    return loading
-        ? Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+    return Form(
+      key: _formKey,
+      child: Container(
+        color: Colors.white,
+        margin: EdgeInsets.all(16),
+        child: ListView(
+          children: <Widget>[
+            AppText(
+              "Login",
+              "Digite o login",
+              controller: _tLogin,
+              validator: _validateLogin,
+              keyboardType: TextInputType.emailAddress,
             ),
-          )
-        : Form(
-            key: _formKey,
-            child: Container(
-              color: Colors.white,
-              margin: EdgeInsets.all(16),
-              child: ListView(
-                children: <Widget>[
-                  AppText(
-                    "Login",
-                    "Digite o login",
-                    controller: _tLogin,
-                    validator: _validateLogin,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  AppText("Senha", "Digite a senha",
-                      password: true,
-                      controller: _tSenha,
-                      validator: _validatePassword,
-                      keyboardType: TextInputType.number),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  AppButton(
-                    "Login",
-                    onPressed: () {
-                      _onClickLogin(context);
-                    },
-                  )
-                ],
-              ),
+            SizedBox(
+              height: 10,
             ),
-          );
+            AppText("Senha", "Digite a senha",
+                password: true,
+                controller: _tSenha,
+                validator: _validatePassword,
+                keyboardType: TextInputType.number),
+            SizedBox(
+              height: 16,
+            ),
+            AppButton(
+              "Login",
+              onPressed: () {
+                _onClickLogin(context);
+              },
+              showProgress: loading,
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   _onClickLogin(context) async {

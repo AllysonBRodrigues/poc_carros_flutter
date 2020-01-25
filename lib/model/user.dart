@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import '../utils/prefs.dart';
+import '../utils/prefs.dart';
+
 class User {
   int id;
   String login;
@@ -37,4 +42,22 @@ class User {
     data['roles'] = this.roles;
     return data;
   }
+
+  void save() {
+    Map map = toJson();
+    String userJson = json.encode(map);
+    Prefs.setString("user.prefs", userJson);
+  }
+
+  static Future<User> get() async {
+    String userJson = await Prefs.getString("user.prefs");
+    Map map = json.decode(userJson);
+    return User.fromJson(map);
+
+  }
+
+  static void clear() {
+    Prefs.setString("user.prefs", "");
+  }
+
 }
