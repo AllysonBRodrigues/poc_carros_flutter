@@ -1,64 +1,60 @@
-import 'package:carros/enuns/status.dart';
+import 'package:carros/block/cars_block.dart';
 import 'package:carros/model/cars.dart';
-import 'package:carros/model/result.dart';
-import 'package:carros/network/cars_api.dart';
 import 'package:carros/pages/car_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../model/result.dart';
-import '../network/cars_api.dart';
 import '../utils/nav.dart';
 
 class CarsListView extends StatefulWidget {
   String carTypes;
+
   CarsListView(this.carTypes);
 
   @override
   _CarsListViewState createState() => _CarsListViewState();
-
 }
-class _CarsListViewState extends State<CarsListView> with AutomaticKeepAliveClientMixin<CarsListView>{
-  Result<List<Cars>> cars;
+
+class _CarsListViewState extends State<CarsListView>
+    with AutomaticKeepAliveClientMixin<CarsListView> {
+  List<Cars> cars;
+  final bloc = CarsBloc();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Future<Result<List<Cars>>> future = CarsApi.getCars(widget.carTypes);
-
-    future.then((Result<List<Cars>> result) {
-      setState(() {
-        cars = result;
-      });
-    });
+    bloc.loadCars(widget.carTypes);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-     if(cars == null) {
-       return Center(
-         child: CircularProgressIndicator(
-           valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-         ),
-       );
-    }else{
-       return _body();
-    }
+    return _body();
   }
 
   _body() {
-        if (cars.status == Status.SUCCESS) {
-          return _listCars(cars.data);
-        } else {
-          return Center(
-            child: Text(
-              cars.message,
-              style: TextStyle(fontSize: 20),
-            ),
-          );
-        }
+    return StreamBuilder(
+        stream: bloc.strean,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                "Não foi possivel carregar lista",
+                style: TextStyle(fontSize: 20),
+              ),
+            );
+          }
+
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              ),
+            );
+          }
+
+          return _listCars(snapshot.data);
+        });
   }
 
   Container _listCars(List<Cars> cars) {
@@ -100,7 +96,7 @@ class _CarsListViewState extends State<CarsListView> with AutomaticKeepAliveClie
                           'DETALHES',
                         ),
                         onPressed: () {
-                         push(context, CarDetail(car));
+                          push(context, CarDetail(car));
                         },
                       ),
                       FlatButton(
@@ -123,4 +119,11 @@ class _CarsListViewState extends State<CarsListView> with AutomaticKeepAliveClie
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    bloc.dispose();
+  }
 }

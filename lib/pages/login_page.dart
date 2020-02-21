@@ -1,3 +1,4 @@
+import 'package:carros/block/login_block.dart';
 import 'package:carros/enuns/status.dart';
 import 'package:carros/model/result.dart';
 import 'package:carros/network/login_api.dart';
@@ -23,6 +24,8 @@ class _LoginPageState extends State<LoginPage> {
   var _tSenha = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
+
+  final _block = LoginBloc();
 
   @override
   void initState() {
@@ -70,12 +73,17 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 16,
             ),
-            AppButton(
-              "Login",
-              onPressed: () {
-                _onClickLogin(context);
-              },
-              showProgress: loading,
+            StreamBuilder<bool>(
+              stream: _block.stream,
+              builder: (context, snapshot) {
+                return AppButton(
+                  "Login",
+                  onPressed: () {
+                    _onClickLogin(context);
+                  },
+                  showProgress: snapshot.data ?? false,
+                );
+              }
             )
           ],
         ),
@@ -89,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
         loading = true;
       });
 
-      Result ok = await LoginApi.login(_tLogin.text, _tSenha.text);
+      Result ok = await _block.login(_tLogin.text, _tSenha.text);
 
       if (ok.status == Status.SUCCESS) {
         push(context, HomPage(), replace: true);
@@ -115,5 +123,11 @@ class _LoginPageState extends State<LoginPage> {
       return "Informe a senha";
     }
     return null;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _block.dispose();
   }
 }
