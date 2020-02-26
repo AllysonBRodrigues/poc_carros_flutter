@@ -1,5 +1,6 @@
 import 'package:carros/network/cars_api.dart';
 import 'package:carros/pages/cars_listview.dart';
+import 'package:carros/pages/cars_page.dart';
 import 'package:carros/widgets/appbar.dart';
 import 'package:carros/widgets/drawer_menu.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,9 @@ class _HomPageState extends State<HomPage> with SingleTickerProviderStateMixin<H
       child: Scaffold(
         appBar: appbar("Carros"),
         body: TabBarView(children: [
-          CarsListView(CarTypes.classics),
-          CarsListView(CarTypes.sports),
-          CarsListView(CarTypes.lux),
+          CarsPage(CarTypes.classics),
+          CarsPage(CarTypes.sports),
+          CarsPage(CarTypes.lux),
         ]),
         drawer: DrawerList(),
       ),

@@ -1,4 +1,3 @@
-import 'package:carros/block/cars_block.dart';
 import 'package:carros/model/cars.dart';
 import 'package:carros/pages/car_detail.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,58 +5,14 @@ import 'package:flutter/material.dart';
 
 import '../utils/nav.dart';
 
-class CarsListView extends StatefulWidget {
-  String carTypes;
+class CarsListView extends StatelessWidget {
 
-  CarsListView(this.carTypes);
-
-  @override
-  _CarsListViewState createState() => _CarsListViewState();
-}
-
-class _CarsListViewState extends State<CarsListView>
-    with AutomaticKeepAliveClientMixin<CarsListView> {
   List<Cars> cars;
-  final bloc = CarsBloc();
 
-  @override
-  void initState() {
-    super.initState();
-    bloc.loadCars(widget.carTypes);
-  }
+  CarsListView(this.cars);
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return _body();
-  }
-
-  _body() {
-    return StreamBuilder(
-        stream: bloc.strean,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                "Não foi possivel carregar lista",
-                style: TextStyle(fontSize: 20),
-              ),
-            );
-          }
-
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-              ),
-            );
-          }
-
-          return _listCars(snapshot.data);
-        });
-  }
-
-  Container _listCars(List<Cars> cars) {
     return Container(
       padding: EdgeInsets.all(16),
       child: ListView.builder(
@@ -119,11 +74,4 @@ class _CarsListViewState extends State<CarsListView>
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    bloc.dispose();
-  }
 }
