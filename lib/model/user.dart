@@ -14,12 +14,12 @@ class User {
 
   User(
       {this.id,
-        this.login,
-        this.nome,
-        this.email,
-        this.urlFoto,
-        this.token,
-        this.roles});
+      this.login,
+      this.nome,
+      this.email,
+      this.urlFoto,
+      this.token,
+      this.roles});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -51,13 +51,13 @@ class User {
 
   static Future<User> get() async {
     String userJson = await Prefs.getString("user.prefs");
+    if (userJson == null || userJson.isEmpty) return null;
+
     Map map = json.decode(userJson);
     return User.fromJson(map);
-
   }
 
   static void clear() {
-    Prefs.setString("user.prefs", "");
+    Prefs.setString("user.prefs", null);
   }
-
 }

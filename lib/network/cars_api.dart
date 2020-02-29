@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:carros/dao/cars_dao.dart';
 import 'package:carros/model/cars.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,9 +23,10 @@ class CarsApi {
 
     var url =
         'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$type';
-    var response = await http.get(url);
+    print(url);
+    var response = await http.get(url, headers: headers);
     List list = json.decode(response.body);
-    List<Cars> cars = list.map<Cars>((map) => Cars.fromJson(map)).toList();
+    List<Cars> cars = list.map<Cars>((map) => Cars.fromMap(map)).toList();
     return cars;
   }
 }

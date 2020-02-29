@@ -2,11 +2,11 @@ import 'package:carros/model/cars.dart';
 import 'package:carros/pages/car_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../utils/nav.dart';
 
 class CarsListView extends StatelessWidget {
-
   List<Cars> cars;
 
   CarsListView(this.cars);
@@ -26,9 +26,8 @@ class CarsListView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Center(
-                    child: Image.network(
-                      car.urlFoto ??
-                          "https://www.bauducco.com.br/wp-content/uploads/2017/09/default-placeholder-1-2.png",
+                    child: CachedNetworkImage(
+                      imageUrl: car.urlFoto,
                       width: 250,
                     ),
                   ),

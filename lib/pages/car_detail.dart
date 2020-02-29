@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/block/lorem_ipsum_bloc.dart';
 import 'package:carros/network/lorem_ipsum_api.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,7 +73,9 @@ class _CarDetailState extends State<CarDetail> {
     return Container(
         padding: EdgeInsets.all(16),
         child: ListView(children: <Widget>[
-          Image.network(widget.car.urlFoto),
+          CachedNetworkImage(
+            imageUrl: widget.car.urlFoto,
+          ),
           header(),
           Divider(),
           descrition(),

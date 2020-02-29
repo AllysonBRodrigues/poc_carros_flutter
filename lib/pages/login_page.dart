@@ -29,14 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Future<User> future = User.get();
-    future.then((User user) {
-      if (user != null) {
-        push(context, HomPage());
-      }
-    });
   }
 
   @override

@@ -68,10 +68,4 @@ class _CarsPageState extends State<CarsPage>
   @override
   bool get wantKeepAlive => true;
 
-  @override
-  void dispose() {
-  
-    super.dispose();
-    bloc.dispose();
-  }
 }
