@@ -1,27 +1,21 @@
-import 'package:carros/bloc/cars_bloc.dart';
-import 'package:carros/model/cars.dart';
+import 'package:carros/bloc/favorites_bloc.dart';
 import 'package:carros/pages/cars_listview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CarsPage extends StatefulWidget {
-  String carTypes;
-
-  CarsPage(this.carTypes);
-
+class FavoritePage extends StatefulWidget {
   @override
-  _CarsPageState createState() => _CarsPageState();
+  _FavoritePageState createState() => _FavoritePageState();
 }
 
-class _CarsPageState extends State<CarsPage>
-    with AutomaticKeepAliveClientMixin<CarsPage> {
-  List<Cars> cars;
-  final _bloc = CarsBloc();
+class _FavoritePageState extends State<FavoritePage>
+    with AutomaticKeepAliveClientMixin<FavoritePage> {
+  final _bloc = FavoriteBloc();
 
   @override
   void initState() {
     super.initState();
-    _bloc.fetch(widget.carTypes);
+    _bloc.featc();
   }
 
   @override
@@ -58,11 +52,10 @@ class _CarsPageState extends State<CarsPage>
         });
   }
 
-  Future<void> _onRefresh(){
-    return _bloc.fetch(widget.carTypes);
+  Future<void> _onRefresh() {
+    return _bloc.featc();
   }
 
   @override
-  bool get wantKeepAlive => true;
-
+  bool get wantKeepAlive => false;
 }

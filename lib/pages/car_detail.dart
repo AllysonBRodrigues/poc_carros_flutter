@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carros/block/lorem_ipsum_bloc.dart';
-import 'package:carros/network/lorem_ipsum_api.dart';
+import 'package:carros/bloc/lorem_ipsum_bloc.dart';
+import 'package:carros/repository/favorite_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +17,8 @@ class CarDetail extends StatefulWidget {
 
 class _CarDetailState extends State<CarDetail> {
   final _loripsumApiBloc = LoremIpsumBloc();
+
+  Cars get car => widget.car;
 
   @override
   void initState() {
@@ -139,7 +141,7 @@ class _CarDetailState extends State<CarDetail> {
           height: 20,
         ),
         StreamBuilder<String>(
-          stream: _loripsumApiBloc.strean,
+          stream: _loripsumApiBloc.stream,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -171,7 +173,11 @@ class _CarDetailState extends State<CarDetail> {
     }
   }
 
-  void _onClickFavorite() {}
+  void _onClickFavorite() {
+
+      FavoriteRepository.favoritar(car);
+
+  }
 
   void _onClickShare() {}
 }

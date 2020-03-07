@@ -18,27 +18,24 @@ abstract class BaseDao<T extends Entity> {
     return id;
   }
 
-  Future<List<T>> findAll() async {
+ Future<List<T>> query(String sql, [List<dynamic> arguments]) async {
     final dbClient = await db;
+    final list = await dbClient.rawQuery(sql, arguments);
+    return  list.map<T>((json) => fromMap(json)).toList();
 
-    final list = await dbClient.rawQuery('select * from $tableName');
-
-    final carros = list.map<T>((json) => fromMap(json)).toList();
-
-    return carros;
   }
 
 
-  Future<T> findById(int id) async {
-    var dbClient = await db;
-    final list =
-        await dbClient.rawQuery('select * from $tableName where id = ?', [id]);
+  Future<List<T>> findAll() {
+    return query('select * from $tableName');
+  }
 
-    if (list.length > 0) {
-      return fromMap(list.first);
-    }
 
-    return null;
+  Future<T> findById(int id)async{
+    List<T> list = await query('select * from $tableName where id = ?', [id]);
+
+    return list.length > 0 ? list.first : null;
+
   }
 
   Future<bool> exists(int id) async {

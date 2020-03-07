@@ -7,12 +7,19 @@ appbar(String title) {
       tabs: <Widget>[
         Tab(
           text: "Clássicos",
+          icon: Icon(Icons.directions_car),
         ),
         Tab(
           text: "Esportivos",
+          icon: Icon(Icons.directions_car),
         ),
         Tab(
           text: "Luxo",
+          icon: Icon(Icons.directions_car),
+        ),
+        Tab(
+          icon: Icon(Icons.favorite),
+          text: "Favoritos",
         ),
       ],
     ),

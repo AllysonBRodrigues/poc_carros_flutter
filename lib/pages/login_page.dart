@@ -1,7 +1,6 @@
-import 'package:carros/block/login_block.dart';
+import 'package:carros/bloc/login_bloc.dart';
 import 'package:carros/enuns/status.dart';
 import 'package:carros/model/result.dart';
-import 'package:carros/network/login_api.dart';
 import 'package:carros/pages/home_page.dart';
 import 'package:carros/utils/dialog.dart';
 import 'package:carros/utils/nav.dart';
@@ -10,7 +9,6 @@ import 'package:carros/widgets/app_text.dart';
 import 'package:carros/widgets/appbar.dart';
 import 'package:flutter/material.dart';
 
-import '../model/user.dart';
 import '../utils/nav.dart';
 import 'home_page.dart';
 
