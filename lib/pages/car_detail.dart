@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../model/cars.dart';
 
 class CarDetail extends StatefulWidget {
-  Cars car;
+  Car car;
 
   CarDetail(this.car);
 
@@ -18,18 +18,25 @@ class CarDetail extends StatefulWidget {
 class _CarDetailState extends State<CarDetail> {
   final _loripsumApiBloc = LoremIpsumBloc();
 
-  Cars get car => widget.car;
+  Color color = Colors.grey;
+
+  Car get car => widget.car;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
+    FavoriteRepository.isFavorite(car).then((favorite) {
+      setState(() {
+        color = favorite ? Colors.red : Colors.grey;
+      });
+    });
+
     _loripsumApiBloc.fetch();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: buildAppBar(),
       body: _body(),
@@ -106,7 +113,7 @@ class _CarDetailState extends State<CarDetail> {
             IconButton(
               icon: Icon(
                 Icons.favorite,
-                color: Colors.red,
+                color: color,
                 size: 40,
               ),
               onPressed: _onClickFavorite,
@@ -173,10 +180,11 @@ class _CarDetailState extends State<CarDetail> {
     }
   }
 
-  void _onClickFavorite() {
-
-      FavoriteRepository.favoritar(car);
-
+  void _onClickFavorite() async {
+    bool isFavorite = await FavoriteRepository.favoritar(car);
+    setState(() {
+      color = isFavorite ? Colors.red : Colors.grey;
+    });
   }
 
   void _onClickShare() {}

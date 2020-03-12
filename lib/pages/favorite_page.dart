@@ -1,5 +1,5 @@
 import 'package:carros/bloc/favorites_bloc.dart';
-import 'package:carros/pages/cars_listview.dart';
+import 'package:carros/pages/car_listview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +47,7 @@ class _FavoritePageState extends State<FavoritePage>
 
           return RefreshIndicator(
             onRefresh: _onRefresh,
-            child: CarsListView(snapshot.data),
+            child: CarListView(snapshot.data),
           );
         });
   }

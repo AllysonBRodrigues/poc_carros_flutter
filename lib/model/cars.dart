@@ -1,6 +1,6 @@
 import 'package:carros/model/entity.dart';
 
-class Cars extends Entity {
+class Car extends Entity {
   int id;
   String nome;
   String tipo;
@@ -10,7 +10,7 @@ class Cars extends Entity {
   String latitude;
   String longitude;
 
-  Cars(
+  Car(
       {this.id,
         this.nome,
         this.tipo,
@@ -20,7 +20,7 @@ class Cars extends Entity {
         this.latitude,
         this.longitude});
 
-  Cars.fromMap(Map<String, dynamic> map) {
+  Car.fromMap(Map<String, dynamic> map) {
     id = map['id'];
     nome = map['nome'];
     tipo = map['tipo'];

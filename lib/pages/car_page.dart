@@ -1,22 +1,22 @@
-import 'package:carros/bloc/cars_bloc.dart';
+import 'package:carros/bloc/car_bloc.dart';
 import 'package:carros/model/cars.dart';
-import 'package:carros/pages/cars_listview.dart';
+import 'package:carros/pages/car_listview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CarsPage extends StatefulWidget {
+class CarPage extends StatefulWidget {
   String carTypes;
 
-  CarsPage(this.carTypes);
+  CarPage(this.carTypes);
 
   @override
-  _CarsPageState createState() => _CarsPageState();
+  _CarPageState createState() => _CarPageState();
 }
 
-class _CarsPageState extends State<CarsPage>
-    with AutomaticKeepAliveClientMixin<CarsPage> {
-  List<Cars> cars;
-  final _bloc = CarsBloc();
+class _CarPageState extends State<CarPage>
+    with AutomaticKeepAliveClientMixin<CarPage> {
+  List<Car> cars;
+  final _bloc = CarBloc();
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _CarsPageState extends State<CarsPage>
 
           return RefreshIndicator(
             onRefresh: _onRefresh,
-            child: CarsListView(snapshot.data),
+            child: CarListView(snapshot.data),
           );
         });
   }

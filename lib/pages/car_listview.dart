@@ -6,10 +6,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../utils/nav.dart';
 
-class CarsListView extends StatelessWidget {
-  List<Cars> cars;
+class CarListView extends StatelessWidget {
+  List<Car> cars;
 
-  CarsListView(this.cars);
+  CarListView(this.cars);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class CarsListView extends StatelessWidget {
       child: ListView.builder(
         itemCount: cars != null ? cars.length : 0,
         itemBuilder: (BuildContext context, int index) {
-          Cars car = cars[index];
+          Car car = cars[index];
           return Card(
             child: Container(
               padding: EdgeInsets.all(8),

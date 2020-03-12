@@ -13,7 +13,7 @@ class CarTypes {
 }
 
 class CarsApi {
-  static Future<List<Cars>> getCars(String type) async {
+  static Future<List<Car>> getCars(String type) async {
     User user = await User.get();
 
     Map<String, String> headers = {
@@ -26,7 +26,7 @@ class CarsApi {
     print(url);
     var response = await http.get(url, headers: headers);
     List list = json.decode(response.body);
-    List<Cars> cars = list.map<Cars>((map) => Cars.fromMap(map)).toList();
+    List<Car> cars = list.map<Car>((map) => Car.fromMap(map)).toList();
     return cars;
   }
 }

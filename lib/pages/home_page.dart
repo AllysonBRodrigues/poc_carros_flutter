@@ -1,6 +1,6 @@
 import 'package:carros/network/cars_api.dart';
-import 'package:carros/pages/cars_listview.dart';
-import 'package:carros/pages/cars_page.dart';
+import 'package:carros/pages/car_listview.dart';
+import 'package:carros/pages/car_page.dart';
 import 'package:carros/pages/favorite_page.dart';
 import 'package:carros/widgets/appbar.dart';
 import 'package:carros/widgets/drawer_menu.dart';
@@ -19,9 +19,9 @@ class _HomPageState extends State<HomPage> with SingleTickerProviderStateMixin<H
       child: Scaffold(
         appBar: appbar("Carros"),
         body: TabBarView(children: [
-          CarsPage(CarTypes.classics),
-          CarsPage(CarTypes.sports),
-          CarsPage(CarTypes.lux),
+          CarPage(CarTypes.classics),
+          CarPage(CarTypes.sports),
+          CarPage(CarTypes.lux),
           FavoritePage(),
         ]),
         drawer: DrawerList(),
