@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/bloc/lorem_ipsum_bloc.dart';
+import 'package:carros/pages/car_form_page.dart';
 import 'package:carros/repository/favorite_repository.dart';
+import 'package:carros/utils/nav.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -170,6 +172,7 @@ class _CarDetailState extends State<CarDetail> {
     switch (value) {
       case "Editar":
         print("Editar!");
+        push(context, CarroFormPage(carro: car,));
         break;
       case "Deletar":
         print("Deletar!");

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-confirmAlert(context, message) {
+confirmAlert(context, message,{Function callback}) {
   showDialog(
     context: context,
     builder: (context) {
@@ -14,6 +14,9 @@ confirmAlert(context, message) {
               child: Text("OK"),
               onPressed: () {
                 Navigator.pop(context);
+                if(callback != null) {
+                   callback();
+                }
               },
             )
           ],

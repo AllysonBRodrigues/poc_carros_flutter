@@ -1,7 +1,9 @@
 import 'package:carros/network/cars_api.dart';
+import 'package:carros/pages/car_form_page.dart';
 import 'package:carros/pages/car_listview.dart';
 import 'package:carros/pages/car_page.dart';
 import 'package:carros/pages/favorite_page.dart';
+import 'package:carros/utils/nav.dart';
 import 'package:carros/widgets/appbar.dart';
 import 'package:carros/widgets/drawer_menu.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,8 @@ class HomPage extends StatefulWidget {
   _HomPageState createState() => _HomPageState();
 }
 
-class _HomPageState extends State<HomPage> with SingleTickerProviderStateMixin<HomPage>{
+class _HomPageState extends State<HomPage>
+    with SingleTickerProviderStateMixin<HomPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -25,7 +28,14 @@ class _HomPageState extends State<HomPage> with SingleTickerProviderStateMixin<H
           FavoritePage(),
         ]),
         drawer: DrawerList(),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: _onClickAddCar),
       ),
     );
+  }
+
+  void _onClickAddCar() {
+    push(context, CarroFormPage());
   }
 }
