@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carros/bloc/car_bloc.dart';
 import 'package:carros/enuns/status.dart';
 import 'package:carros/model/cars.dart';
 import 'package:carros/model/result.dart';
@@ -8,6 +11,7 @@ import 'package:carros/widgets/app_buttn.dart';
 import 'package:carros/widgets/app_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CarroFormPage extends StatefulWidget {
   final Car carro;
@@ -25,9 +29,14 @@ class _CarroFormPageState extends State<CarroFormPage> {
   final tDesc = TextEditingController();
   final tTipo = TextEditingController();
 
+  final _carBloc = CarBloc();
+
+
   int _radioIndex = 0;
 
   var _showProgress = false;
+
+  File _file;
 
   Car get carro => widget.carro;
 
@@ -105,10 +114,15 @@ class _CarroFormPageState extends State<CarroFormPage> {
             keyboardType: TextInputType.text,
             validator: _validateNome,
           ),
-          AppButton(
-            "Salvar",
-             onPressed: _onClickSalvar,
-             showProgress: _showProgress,
+          StreamBuilder<bool>(
+            stream: _carBloc.streamSaveCar,
+            builder: (context, snapshot) {
+              return AppButton(
+                "Salvar",
+                 onPressed: _onClickSalvar,
+                 showProgress: snapshot.data ?? false,
+              );
+            }
           ),
         ],
       ),
@@ -116,14 +130,19 @@ class _CarroFormPageState extends State<CarroFormPage> {
   }
 
   _headerFoto() {
-    return carro != null
-        ? CachedNetworkImage(
-            imageUrl: carro.urlFoto,
-          )
-        : Image.asset(
-            "assets/images/camera.png",
-            height: 150,
-          );
+    return InkWell(
+      onTap: _onClickFoto,
+      child:  _file != null
+      ? Image.file(_file,height: 150,)
+      :carro != null
+          ? CachedNetworkImage(
+        imageUrl: carro.urlFoto ?? "https://saints-auto.com/wp-content/uploads/2017/06/car-placeholder-2-700.jpg",
+      )
+          : Image.asset(
+        "assets/images/camera.png",
+        height: 150,
+      ),
+    );
   }
 
   _radioTipo() {
@@ -202,26 +221,28 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     print("Carro: $c");
 
-    setState(() {
-      _showProgress = true;
-    });
-
     print("Salvar o carro $c");
 
-    Result<bool>  response = await CarsApi.saveCar(c);
+    Result<bool>  response = await _carBloc.save(c, _file);
 
     if(response.status == Status.SUCCESS){
-      confirmAlert(context, "Carro salvo com sucesso", callback: (){
+      confirmAlert(context, "Carro Salvo com sucesso", callback: (){
         Navigator.pop(context);
       });
     } else {
-      confirmAlert(context, response.message);
+      confirmAlert(context, "Erro ao salvar carro");
     }
 
-    setState(() {
-      _showProgress = false;
-    });
-
     print("Fim.");
+  }
+
+   _onClickFoto() async{
+    File  file = await ImagePicker.pickImage(source: ImageSource.camera);
+    if(file != null){
+      setState(() {
+        this._file = file;
+      });
+
+    }
   }
 }

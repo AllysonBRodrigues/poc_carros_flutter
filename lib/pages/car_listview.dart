@@ -27,7 +27,7 @@ class CarListView extends StatelessWidget {
                 children: <Widget>[
                   Center(
                     child: CachedNetworkImage(
-                      imageUrl: car.urlFoto,
+                      imageUrl: car.urlFoto ?? "https://saints-auto.com/wp-content/uploads/2017/06/car-placeholder-2-700.jpg",
                       width: 250,
                     ),
                   ),

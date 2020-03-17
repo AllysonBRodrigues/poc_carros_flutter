@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carros/bloc/car_bloc.dart';
 import 'package:carros/bloc/lorem_ipsum_bloc.dart';
+import 'package:carros/enuns/status.dart';
+import 'package:carros/model/result.dart';
 import 'package:carros/pages/car_form_page.dart';
 import 'package:carros/repository/favorite_repository.dart';
+import 'package:carros/utils/dialog.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +23,7 @@ class CarDetail extends StatefulWidget {
 
 class _CarDetailState extends State<CarDetail> {
   final _loripsumApiBloc = LoremIpsumBloc();
+  final _carBloc = CarBloc();
 
   Color color = Colors.grey;
 
@@ -84,8 +89,12 @@ class _CarDetailState extends State<CarDetail> {
     return Container(
         padding: EdgeInsets.all(16),
         child: ListView(children: <Widget>[
-          CachedNetworkImage(
-            imageUrl: widget.car.urlFoto,
+          InkWell(
+            onTap: _onClickFoto,
+            child: CachedNetworkImage(
+              imageUrl: widget.car.urlFoto ??
+                  "https://saints-auto.com/wp-content/uploads/2017/06/car-placeholder-2-700.jpg",
+            ),
           ),
           header(),
           Divider(),
@@ -172,10 +181,15 @@ class _CarDetailState extends State<CarDetail> {
     switch (value) {
       case "Editar":
         print("Editar!");
-        push(context, CarroFormPage(carro: car,));
+        push(
+            context,
+            CarroFormPage(
+              carro: car,
+            ));
         break;
       case "Deletar":
         print("Deletar!");
+        _onClickDelelte();
         break;
       case "Share":
         print("Share");
@@ -190,5 +204,21 @@ class _CarDetailState extends State<CarDetail> {
     });
   }
 
-  void _onClickShare() {}
+  void _onClickDelelte() async {
+    Result<bool> response = await _carBloc.delete(car);
+    if (response.status == Status.SUCCESS) {
+      confirmAlert(context, "Carro deletado com sucesso", callback: () {
+        Navigator.pop(context);
+      });
+    } else {
+      confirmAlert(context, response.message);
+    }
+  }
+
+  void _onClickShare() {
+    print("foto");
+
+  }
+
+  void _onClickFoto() {}
 }

@@ -21,7 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   var _tLogin = TextEditingController();
   var _tSenha = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool loading = false;
 
   final _block = LoginBloc();
 
@@ -84,9 +83,6 @@ class _LoginPageState extends State<LoginPage> {
 
   _onClickLogin(context) async {
     if (_formKey.currentState.validate()) {
-      setState(() {
-        loading = true;
-      });
 
       Result ok = await _block.login(_tLogin.text, _tSenha.text);
 
@@ -95,10 +91,6 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         confirmAlert(context, ok.message);
       }
-
-      setState(() {
-        loading = false;
-      });
     }
   }
 
