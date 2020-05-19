@@ -1,7 +1,9 @@
 import 'package:carros/bloc/favorites_bloc.dart';
+import 'package:carros/main.dart';
 import 'package:carros/pages/car_listview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FavoritePage extends StatefulWidget {
   @override
@@ -10,12 +12,13 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage>
     with AutomaticKeepAliveClientMixin<FavoritePage> {
-  final _bloc = FavoriteBloc();
+
 
   @override
   void initState() {
     super.initState();
-    _bloc.featc();
+    FavoriteBloc favoriteBloc = Provider.of<FavoriteBloc>(context, listen: false);
+    favoriteBloc.featc();
   }
 
   @override
@@ -25,8 +28,9 @@ class _FavoritePageState extends State<FavoritePage>
   }
 
   _body() {
+    FavoriteBloc favoriteBloc = Provider.of<FavoriteBloc>(context);
     return StreamBuilder(
-        stream: _bloc.stream,
+        stream: favoriteBloc.stream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -53,7 +57,8 @@ class _FavoritePageState extends State<FavoritePage>
   }
 
   Future<void> _onRefresh() {
-    return _bloc.featc();
+    FavoriteBloc favoriteBloc = Provider.of<FavoriteBloc>(context);
+    return favoriteBloc.featc();
   }
 
   @override

@@ -14,8 +14,4 @@ class FavoriteBloc extends BaseBloc<List<Car>> {
       addError(e);
     }
   }
-
-  void dispose() {
-    dispose();
-  }
 }
