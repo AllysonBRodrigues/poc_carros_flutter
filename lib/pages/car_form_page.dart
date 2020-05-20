@@ -5,7 +5,6 @@ import 'package:carros/bloc/car_bloc.dart';
 import 'package:carros/enuns/status.dart';
 import 'package:carros/model/cars.dart';
 import 'package:carros/model/result.dart';
-import 'package:carros/network/cars_api.dart';
 import 'package:carros/utils/dialog.dart';
 import 'package:carros/widgets/app_buttn.dart';
 import 'package:carros/widgets/app_text.dart';

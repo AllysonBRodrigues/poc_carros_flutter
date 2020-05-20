@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../utils/prefs.dart';
-import '../utils/prefs.dart';
 
 class User {
   int id;

@@ -1,5 +1,6 @@
-import 'package:carros/model/entity.dart';
 import 'dart:convert' as convert;
+
+import 'package:carros/model/entity.dart';
 
 class Car extends Entity {
   int id;

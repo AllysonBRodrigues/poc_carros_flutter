@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:carros/bloc/base_bloc.dart';
 import 'package:carros/dao/cars_dao.dart';
-import 'package:carros/enuns/status.dart';
 import 'package:carros/model/cars.dart';
 import 'package:carros/model/result.dart';
 import 'package:carros/network/cars_api.dart';
