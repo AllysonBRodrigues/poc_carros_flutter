@@ -6,6 +6,7 @@ import 'package:carros/enuns/status.dart';
 import 'package:carros/model/cars.dart';
 import 'package:carros/model/result.dart';
 import 'package:carros/utils/dialog.dart';
+import 'package:carros/utils/event_bus.dart';
 import 'package:carros/widgets/app_buttn.dart';
 import 'package:carros/widgets/app_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -226,6 +227,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     if(response.status == Status.SUCCESS){
       confirmAlert(context, "Carro Salvo com sucesso", callback: (){
+        EventBus.get(context).sendEvent(CarEvent("carro_salvo", c.tipo));
         Navigator.pop(context);
       });
     } else {

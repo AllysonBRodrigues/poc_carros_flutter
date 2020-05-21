@@ -6,6 +6,7 @@ import 'package:carros/model/result.dart';
 import 'package:carros/pages/car_form_page.dart';
 import 'package:carros/repository/favorite_repository.dart';
 import 'package:carros/utils/dialog.dart';
+import 'package:carros/utils/event_bus.dart';
 import 'package:carros/utils/nav.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -208,6 +209,7 @@ class _CarDetailState extends State<CarDetail> {
     Result<bool> response = await _carBloc.delete(car);
     if (response.status == Status.SUCCESS) {
       confirmAlert(context, "Carro deletado com sucesso", callback: () {
+        EventBus.get(context).sendEvent(CarEvent("carro_deletado", car.tipo));
         Navigator.pop(context);
       });
     } else {
