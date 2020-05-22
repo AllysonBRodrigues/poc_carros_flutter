@@ -2,6 +2,7 @@ import 'dart:convert' as convert;
 
 import 'package:carros/model/entity.dart';
 import 'package:carros/utils/event_bus.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CarEvent extends Event{
   String action;
@@ -64,6 +65,13 @@ class Car extends Entity {
 
   String toJson(){
     return convert.json.encode(toMap());
+  }
+
+  latLgn(){
+    return LatLng(
+      latitude == null || latitude.isEmpty ? 0.0 : double.parse(latitude),
+      longitude == null || longitude.isEmpty ? 0.0 : double.parse(longitude)
+    );
   }
 
 }

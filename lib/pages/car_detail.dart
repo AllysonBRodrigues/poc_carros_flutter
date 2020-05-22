@@ -4,6 +4,7 @@ import 'package:carros/bloc/lorem_ipsum_bloc.dart';
 import 'package:carros/enuns/status.dart';
 import 'package:carros/model/result.dart';
 import 'package:carros/pages/car_form_page.dart';
+import 'package:carros/pages/map_page.dart';
 import 'package:carros/repository/favorite_repository.dart';
 import 'package:carros/utils/dialog.dart';
 import 'package:carros/utils/event_bus.dart';
@@ -57,7 +58,9 @@ class _CarDetailState extends State<CarDetail> {
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.place),
-          onPressed: _onClickMap,
+          onPressed: () {
+            _onClickMap(context);
+          },
         ),
         IconButton(
           icon: Icon(Icons.videocam),
@@ -176,7 +179,13 @@ class _CarDetailState extends State<CarDetail> {
 
   void _onClickVideo() {}
 
-  void _onClickMap() {}
+  void _onClickMap(context) {
+
+    if(car.latitude != null && car.longitude != null){
+      push(context, MapPage(car));
+    }
+
+  }
 
   _onClickPopupMenu(String value) {
     switch (value) {
@@ -219,7 +228,6 @@ class _CarDetailState extends State<CarDetail> {
 
   void _onClickShare() {
     print("foto");
-
   }
 
   void _onClickFoto() {}
