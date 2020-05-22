@@ -3,6 +3,7 @@ import 'package:carros/model/cars.dart';
 import 'package:carros/pages/car_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 
 import '../utils/nav.dart';
 
@@ -22,10 +23,10 @@ class CarListView extends StatelessWidget {
           return Container(
             height: 280,
             child: InkWell(
-              onTap: (){
+              onTap: () {
                 push(context, CarDetail(car));
               },
-              onLongPress: (){
+              onLongPress: () {
                 _onLongClickCar(context, car);
               },
               child: Card(
@@ -36,7 +37,8 @@ class CarListView extends StatelessWidget {
                     children: <Widget>[
                       Center(
                         child: CachedNetworkImage(
-                          imageUrl: car.urlFoto ?? "https://saints-auto.com/wp-content/uploads/2017/06/car-placeholder-2-700.jpg",
+                          imageUrl: car.urlFoto ??
+                              "https://saints-auto.com/wp-content/uploads/2017/06/car-placeholder-2-700.jpg",
                           width: 250,
                         ),
                       ),
@@ -87,27 +89,36 @@ class CarListView extends StatelessWidget {
 }
 
 void _onLongClickCar(BuildContext context, Car car) {
-  showDialog(context: context, builder: (context){
-    return SimpleDialog(
-      title: Text(car.nome),
-      children: <Widget>[
-        ListTile(
-          title: Text("Detalhe"),
-          leading: Icon(Icons.directions_car),
-          onTap: (){
-            Navigator.pop(context);
-            push(context, CarDetail(car));
-          },
-        ),
-        ListTile(
-          title: Text("Compartilhar"),
-          leading: Icon(Icons.share),
-          onTap: (){
-           print("Share");
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-  });
+  showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                car.nome,
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            ListTile(
+              title: Text("Detalhe"),
+              leading: Icon(Icons.directions_car),
+              onTap: () {
+                Navigator.pop(context);
+                push(context, CarDetail(car));
+              },
+            ),
+            ListTile(
+              title: Text("Compartilhar"),
+              leading: Icon(Icons.share),
+              onTap: () {
+                Share.share(car.urlFoto);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      });
 }
