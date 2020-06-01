@@ -1,6 +1,7 @@
 import 'package:carros/bloc/login_bloc.dart';
 import 'package:carros/enuns/status.dart';
 import 'package:carros/model/result.dart';
+import 'package:carros/network/firebase_service.dart';
 import 'package:carros/pages/home_page.dart';
 import 'package:carros/utils/dialog.dart';
 import 'package:carros/utils/nav.dart';
@@ -8,6 +9,7 @@ import 'package:carros/widgets/app_buttn.dart';
 import 'package:carros/widgets/app_text.dart';
 import 'package:carros/widgets/appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 import '../utils/nav.dart';
 import 'home_page.dart';
@@ -64,17 +66,23 @@ class _LoginPageState extends State<LoginPage> {
               height: 16,
             ),
             StreamBuilder<bool>(
-              stream: _block.stream,
-              builder: (context, snapshot) {
-                return AppButton(
-                  "Login",
-                  onPressed: () {
-                    _onClickLogin(context);
-                  },
-                  showProgress: snapshot.data ?? false,
-                );
-              }
-            )
+                stream: _block.stream,
+                builder: (context, snapshot) {
+                  return AppButton(
+                    "Login",
+                    onPressed: () {
+                      _onClickLogin(context);
+                    },
+                    showProgress: snapshot.data ?? false,
+                  );
+                }),
+            Container(
+              height: 46,
+              margin: EdgeInsets.only(top: 20),
+              child: GoogleSignInButton(
+                onPressed: _googleLogin,
+              ),
+            ),
           ],
         ),
       ),
@@ -83,7 +91,6 @@ class _LoginPageState extends State<LoginPage> {
 
   _onClickLogin(context) async {
     if (_formKey.currentState.validate()) {
-
       Result ok = await _block.login(_tLogin.text, _tSenha.text);
 
       if (ok.status == Status.SUCCESS) {
@@ -112,5 +119,10 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     super.dispose();
     _block.dispose();
+  }
+
+  void _googleLogin() {
+    final service = FirebaseService();
+
   }
 }
