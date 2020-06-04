@@ -8,6 +8,26 @@ class FirebaseService{
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<Result<FirebaseUser>> emailSignIn(String email, String senha) async {
+
+    final FirebaseUser fuser = (await _auth.signInWithEmailAndPassword(email: email, password: senha)).user;
+
+    final user = User(
+        nome: fuser.displayName,
+        login: fuser.email,
+        email: fuser.email,
+        urlFoto: fuser.photoUrl
+    );
+
+    user.save();
+
+    if(fuser != null){
+      return Result.success(fuser);
+    } else {
+      return Result.error("Erro ao logar com google");
+    }
+  }
+
 
   Future<Result<FirebaseUser>> handleSignIn() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -19,7 +39,6 @@ class FirebaseService{
     );
 
     final FirebaseUser fuser = (await _auth.signInWithCredential(credential)).user;
-    print("signed in " + fuser.displayName);
 
     final user = User(
       nome: fuser.displayName,

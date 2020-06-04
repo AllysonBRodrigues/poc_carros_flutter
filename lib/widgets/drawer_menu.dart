@@ -49,10 +49,10 @@ class DrawerList extends StatelessWidget {
 
   UserAccountsDrawerHeader _header(User user) {
     return UserAccountsDrawerHeader(
-        accountName: Text(user.nome),
+        accountName: Text(user.nome ?? "Usuario do Firebase"),
         accountEmail: Text(user.email),
         currentAccountPicture: (CircleAvatar(
-          backgroundImage: NetworkImage(user.urlFoto),
+          backgroundImage: NetworkImage(user.urlFoto ?? "https://www.dovercourt.org/wp-content/uploads/2019/11/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.jpg"),
         )));
   }
 }
