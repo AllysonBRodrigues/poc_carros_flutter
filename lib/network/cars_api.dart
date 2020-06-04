@@ -21,11 +21,11 @@ class CarsApi {
 
     Map<String, String> headers = {
       "Content-Type": "application/json",
-      "Authorization": "Bearer ${user.token}"
+     // "Authorization": "Bearer ${user.token}"
     };
 
     var url =
-        'https://carros-springboot.herokuapp.com/api/v2/carros/tipo/$type';
+        'https://carros-springboot.herokuapp.com/api/v1/carros/tipo/$type';
     print(url);
     var response = await http.get(url, headers: headers);
     List list = json.decode(response.body);
@@ -47,7 +47,7 @@ class CarsApi {
         car.urlFoto = response;
       }
 
-      var url = 'https://carros-springboot.herokuapp.com/api/v2/carros';
+      var url = 'https://carros-springboot.herokuapp.com/api/v1/carros';
       if (car.id != null) {
         url += "/${car.id}";
       }
@@ -85,7 +85,7 @@ class CarsApi {
         "Authorization": "Bearer ${user.token}"
       };
 
-      var url = 'https://carros-springboot.herokuapp.com/api/v2/carros/${car.id}';
+      var url = 'https://carros-springboot.herokuapp.com/api/v1/carros/${car.id}';
       print(url);
 
       var response = await http.delete(url, headers: headers);

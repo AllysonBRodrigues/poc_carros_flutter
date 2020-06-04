@@ -27,7 +27,7 @@ class User {
     email = json['email'];
     urlFoto = json['urlFoto'];
     token = json['token'];
-    roles = json['roles'].cast<String>();
+
   }
 
   Map<String, dynamic> toJson() {

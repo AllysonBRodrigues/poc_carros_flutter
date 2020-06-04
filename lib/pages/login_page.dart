@@ -121,8 +121,13 @@ class _LoginPageState extends State<LoginPage> {
     _block.dispose();
   }
 
-  void _googleLogin() {
+  void _googleLogin() async{
     final service = FirebaseService();
-
+    Result result = await service.handleSignIn();
+    if(result.status == Status.SUCCESS){
+      push(context, HomPage(), replace: true);
+    } else {
+      confirmAlert(context, result.message);
+    }
   }
 }
